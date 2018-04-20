@@ -31,6 +31,8 @@ class Post(models.Model):
 
     body = models.TextField()
 
+    views = models.PositiveIntegerField(default=0)
+
     #创建时间 最后一次修改时间 modified - 修饰，改良
     created_time = models.DateTimeField()
     modified_time = models.DateTimeField()
@@ -48,6 +50,10 @@ class Post(models.Model):
 
     def get_absolute_url(self):
         return reverse('blog:detail', kwargs={'pk': self.pk})
+
+    def increase_views(self):
+        self.views += 1
+        self.save(update_fields=['views'])
 
     class Meta:
         ordering = ['-created_time']
